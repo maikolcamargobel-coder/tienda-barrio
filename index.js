@@ -7,7 +7,17 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
-const PORT = 3000;
+
+// ======================================
+// PUERTO
+// ======================================
+
+const PORT = process.env.PORT || 3000;
+
+
+// ======================================
+// CONEXIÓN CON SUPABASE
+// ======================================
 
 const supabase = createClient(
     process.env.SUPABASE_URL,
@@ -27,13 +37,17 @@ app.get("/api/productos", async (req, res) => {
         .order("id", { ascending: true });
 
     if (error) {
+
         console.error("Error al listar:", error);
+
         return res.status(500).json({
             error: error.message
         });
+
     }
 
     res.json(data);
+
 });
 
 
@@ -50,6 +64,7 @@ app.post("/api/productos", async (req, res) => {
         cantidad
     } = req.body;
 
+
     const { data, error } = await supabase
         .from("productos")
         .insert([
@@ -62,14 +77,20 @@ app.post("/api/productos", async (req, res) => {
         ])
         .select();
 
+
     if (error) {
+
         console.error("Error al guardar:", error);
+
         return res.status(500).json({
             error: error.message
         });
+
     }
 
+
     res.json(data[0]);
+
 });
 
 
@@ -88,6 +109,7 @@ app.put("/api/productos/:id", async (req, res) => {
         cantidad
     } = req.body;
 
+
     const { data, error } = await supabase
         .from("productos")
         .update({
@@ -99,14 +121,20 @@ app.put("/api/productos/:id", async (req, res) => {
         .eq("id", id)
         .select();
 
+
     if (error) {
+
         console.error("Error al editar:", error);
+
         return res.status(500).json({
             error: error.message
         });
+
     }
 
+
     res.json(data[0]);
+
 });
 
 
@@ -118,10 +146,12 @@ app.delete("/api/productos/:id", async (req, res) => {
 
     const id = req.params.id;
 
+
     const { error } = await supabase
         .from("productos")
         .delete()
         .eq("id", id);
+
 
     if (error) {
 
@@ -133,6 +163,7 @@ app.delete("/api/productos/:id", async (req, res) => {
 
     }
 
+
     res.json({
         mensaje: "Producto eliminado correctamente"
     });
@@ -141,13 +172,26 @@ app.delete("/api/productos/:id", async (req, res) => {
 
 
 // ======================================
-// PÁGINA PRINCIPAL
+// PÁGINA PRINCIPAL - TIENDA PÚBLICA
 // ======================================
 
 app.get("/", (req, res) => {
 
     res.sendFile(
         __dirname + "/public/index.html"
+    );
+
+});
+
+
+// ======================================
+// PANEL DE ADMINISTRACIÓN
+// ======================================
+
+app.get("/admin", (req, res) => {
+
+    res.sendFile(
+        __dirname + "/public/admin.html"
     );
 
 });

@@ -1,0 +1,892 @@
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administrar productos - Online Market</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        #login {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .login-box h1 {
+            color: #2e7d32;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .login-box button:hover {
+            background: #1b5e20;
+        }
+
+        #errorLogin {
+            color: #c62828;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        #panelAdmin {
+            display: none;
+        }
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .contenedor {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .formulario,
+        .lista {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2e7d32;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .botones {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .guardar {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .cancelar {
+            background: #777;
+            color: white;
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .editar {
+            background: #f9a825;
+            color: white;
+            margin: 3px;
+        }
+
+        .eliminar {
+            background: #c62828;
+            color: white;
+            margin: 3px;
+        }
+
+        .mensaje {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .cerrar {
+            background: #555;
+            color: white;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 700px) {
+            table {
+                font-size: 13px;
+            }
+
+            th,
+            td {
+                padding: 7px;
+            }
+
+            .contenedor {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ======================================
+         LOGIN
+         ====================================== -->
+
+    <div id="login">
+
+        <div class="login-box">
+
+            <h1>🔐 Online Market</h1>
+
+            <h2>Panel de administración</h2>
+
+            <p>Ingresa la contraseña para continuar.</p>
+
+            <input
+                type="password"
+                id="contrasena"
+                placeholder="Contraseña"
+            >
+
+            <button onclick="iniciarSesion()">
+                Entrar
+            </button>
+
+            <div id="errorLogin"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================
+         PANEL ADMINISTRATIVO
+         ====================================== -->
+
+    <div id="panelAdmin">
+
+        <header>
+
+            <h1>Online Market</h1>
+
+            <p>Panel de administración</p>
+
+        </header>
+
+
+        <main class="contenedor">
+
+            <!-- PUNTO 6 -->
+
+            <section class="formulario">
+
+                <h2>Crear nuevo producto</h2>
+
+                <form id="formProducto">
+
+                    <label for="nombre">
+                        Nombre del producto
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombre"
+                        placeholder="Ejemplo: Coca-Cola"
+                    >
+
+                    <label for="precio">
+                        Precio
+                    </label>
+
+                    <input
+                        type="number"
+                        id="precio"
+                        placeholder="Ejemplo: 7000"
+                        min="0"
+                        step="0.01"
+                    >
+
+                    <label for="categoria">
+                        Categoría
+                    </label>
+
+                    <select id="categoria">
+
+                        <option value="">
+                            Seleccionar categoría
+                        </option>
+
+                        <option value="1">Bebidas</option>
+                        <option value="2">Aseo</option>
+                        <option value="3">Granos</option>
+                        <option value="4">Dulces</option>
+                        <option value="5">Enlatados</option>
+                        <option value="6">Galletas</option>
+                        <option value="7">Verduras</option>
+                        <option value="8">Lácteos</option>
+
+                    </select>
+
+                    <label for="cantidad">
+                        Cantidad disponible
+                    </label>
+
+                    <input
+                        type="number"
+                        id="cantidad"
+                        placeholder="Ejemplo: 10"
+                        min="0"
+                    >
+
+                    <div class="botones">
+
+                        <button
+                            type="submit"
+                            class="guardar"
+                            id="botonGuardar"
+                        >
+                            Guardar producto
+                        </button>
+
+                        <button
+                            type="button"
+                            class="cancelar"
+                            id="botonCancelar"
+                            onclick="cancelarEdicion()"
+                        >
+                            Cancelar
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="mensaje"
+                        class="mensaje"
+                    ></div>
+
+                </form>
+
+            </section>
+
+
+            <!-- PUNTO 7 -->
+
+            <section class="lista">
+
+                <h2>Lista de productos</h2>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Categoría</th>
+                            <th>Cantidad</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaProductos"></tbody>
+
+                </table>
+
+            </section>
+
+
+            <button
+                class="cerrar"
+                onclick="cerrarSesion()"
+            >
+                Cerrar sesión
+            </button>
+
+        </main>
+
+    </div>
+
+
+    <script>
+
+        // ======================================
+        // CONTRASEÑA DEL ADMINISTRADOR
+        // ======================================
+
+        const CONTRASENA = "maikolcamargo12";
+
+
+        function iniciarSesion() {
+
+            const contrasena =
+                document.getElementById("contrasena").value;
+
+            const error =
+                document.getElementById("errorLogin");
+
+
+            if (contrasena === CONTRASENA) {
+
+                document.getElementById("login").style.display =
+                    "none";
+
+                document.getElementById("panelAdmin").style.display =
+                    "block";
+
+                cargarProductos();
+
+            } else {
+
+                error.textContent =
+                    "Contraseña incorrecta.";
+
+            }
+
+        }
+
+
+        document
+            .getElementById("contrasena")
+            .addEventListener("keydown", function(event) {
+
+                if (event.key === "Enter") {
+                    iniciarSesion();
+                }
+
+            });
+
+
+        function cerrarSesion() {
+
+            document.getElementById("panelAdmin").style.display =
+                "none";
+
+            document.getElementById("login").style.display =
+                "flex";
+
+            document.getElementById("contrasena").value = "";
+
+        }
+
+
+        let productoEditando = null;
+
+
+        // ======================================
+        // LISTAR PRODUCTOS
+        // ======================================
+
+        async function cargarProductos() {
+
+            try {
+
+                const respuesta =
+                    await fetch("/api/productos");
+
+                const productos =
+                    await respuesta.json();
+
+                mostrarProductos(productos);
+
+            } catch (error) {
+
+                console.error(error);
+
+                mostrarMensaje(
+                    "No se pudieron cargar los productos.",
+                    "red"
+                );
+
+            }
+
+        }
+
+
+        function mostrarProductos(productos) {
+
+            const tabla =
+                document.getElementById("tablaProductos");
+
+            tabla.innerHTML = "";
+
+
+            productos.forEach(producto => {
+
+                const fila =
+                    document.createElement("tr");
+
+
+                fila.innerHTML = `
+
+                    <td>${producto.id}</td>
+
+                    <td>${producto.nombre}</td>
+
+                    <td>
+                        $${Number(producto.precio)
+                            .toLocaleString("es-CO")}
+                    </td>
+
+                    <td>
+                        ${nombreCategoria(producto.categoria_id)}
+                    </td>
+
+                    <td>
+                        ${producto.cantidad}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="editar"
+                            onclick="editarProducto(
+                                ${producto.id},
+                                '${producto.nombre.replace(/'/g, "\\'")}',
+                                ${producto.precio},
+                                ${producto.categoria_id},
+                                ${producto.cantidad}
+                            )"
+                        >
+                            Editar
+                        </button>
+
+                        <button
+                            class="eliminar"
+                            onclick="eliminarProducto(${producto.id})"
+                        >
+                            Eliminar
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                tabla.appendChild(fila);
+
+            });
+
+        }
+
+
+        // ======================================
+        // CATEGORÍAS
+        // ======================================
+
+        function nombreCategoria(id) {
+
+            const categorias = {
+
+                1: "Bebidas",
+                2: "Aseo",
+                3: "Granos",
+                4: "Dulces",
+                5: "Enlatados",
+                6: "Galletas",
+                7: "Verduras",
+                8: "Lácteos"
+
+            };
+
+            return categorias[id] || "Sin categoría";
+
+        }
+
+
+        // ======================================
+        // CREAR Y EDITAR
+        // ======================================
+
+        document
+            .getElementById("formProducto")
+            .addEventListener("submit", async function(event) {
+
+                event.preventDefault();
+
+
+                const nombre =
+                    document.getElementById("nombre")
+                        .value.trim();
+
+                const precio =
+                    document.getElementById("precio").value;
+
+                const categoria_id =
+                    document.getElementById("categoria").value;
+
+                const cantidad =
+                    document.getElementById("cantidad").value;
+
+
+                // ======================================
+                // VALIDACIÓN - PUNTO 10
+                // ======================================
+
+                if (
+                    nombre === "" ||
+                    precio === "" ||
+                    categoria_id === "" ||
+                    cantidad === ""
+                ) {
+
+                    mostrarMensaje(
+                        "Todos los campos son obligatorios.",
+                        "red"
+                    );
+
+                    return;
+
+                }
+
+
+                if (Number(precio) <= 0) {
+
+                    mostrarMensaje(
+                        "El precio debe ser mayor que 0.",
+                        "red"
+                    );
+
+                    return;
+
+                }
+
+
+                if (Number(cantidad) < 0) {
+
+                    mostrarMensaje(
+                        "La cantidad no puede ser negativa.",
+                        "red"
+                    );
+
+                    return;
+
+                }
+
+
+                const datos = {
+
+                    nombre: nombre,
+                    precio: Number(precio),
+                    categoria_id: Number(categoria_id),
+                    cantidad: Number(cantidad)
+
+                };
+
+
+                try {
+
+                    let respuesta;
+
+
+                    if (productoEditando !== null) {
+
+                        respuesta =
+                            await fetch(
+                                `/api/productos/${productoEditando}`,
+                                {
+                                    method: "PUT",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body: JSON.stringify(datos)
+                                }
+                            );
+
+                    } else {
+
+                        respuesta =
+                            await fetch(
+                                "/api/productos",
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body: JSON.stringify(datos)
+                                }
+                            );
+
+                    }
+
+
+                    const resultado =
+                        await respuesta.json();
+
+
+                    if (!respuesta.ok) {
+
+                        mostrarMensaje(
+                            resultado.error ||
+                            "Ocurrió un error.",
+                            "red"
+                        );
+
+                        return;
+
+                    }
+
+
+                    mostrarMensaje(
+                        productoEditando !== null
+                            ? "Producto actualizado correctamente."
+                            : "Producto creado correctamente.",
+                        "green"
+                    );
+
+
+                    limpiarFormulario();
+
+                    cargarProductos();
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    mostrarMensaje(
+                        "Error de conexión con el servidor.",
+                        "red"
+                    );
+
+                }
+
+            });
+
+
+        // ======================================
+        // EDITAR - PUNTO 8
+        // ======================================
+
+        function editarProducto(
+            id,
+            nombre,
+            precio,
+            categoria,
+            cantidad
+        ) {
+
+            productoEditando = id;
+
+            document.getElementById("nombre").value =
+                nombre;
+
+            document.getElementById("precio").value =
+                precio;
+
+            document.getElementById("categoria").value =
+                categoria;
+
+            document.getElementById("cantidad").value =
+                cantidad;
+
+
+            document.getElementById("botonGuardar")
+                .textContent =
+                "Actualizar producto";
+
+
+            document.getElementById("botonCancelar")
+                .style.display =
+                "inline-block";
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        function cancelarEdicion() {
+
+            limpiarFormulario();
+
+        }
+
+
+        function limpiarFormulario() {
+
+            document.getElementById("formProducto")
+                .reset();
+
+            productoEditando = null;
+
+
+            document.getElementById("botonGuardar")
+                .textContent =
+                "Guardar producto";
+
+
+            document.getElementById("botonCancelar")
+                .style.display =
+                "none";
+
+        }
+
+
+        // ======================================
+        // ELIMINAR - PUNTO 9
+        // ======================================
+
+        async function eliminarProducto(id) {
+
+            const confirmar =
+                confirm(
+                    "¿Seguro que quieres eliminar este producto?"
+                );
+
+
+            if (!confirmar) {
+                return;
+            }
+
+
+            try {
+
+                const respuesta =
+                    await fetch(
+                        `/api/productos/${id}`,
+                        {
+                            method: "DELETE"
+                        }
+                    );
+
+
+                const resultado =
+                    await respuesta.json();
+
+
+                if (!respuesta.ok) {
+
+                    mostrarMensaje(
+                        resultado.error ||
+                        "No se pudo eliminar el producto.",
+                        "red"
+                    );
+
+                    return;
+
+                }
+
+
+                mostrarMensaje(
+                    "Producto eliminado correctamente.",
+                    "green"
+                );
+
+
+                cargarProductos();
+
+            } catch (error) {
+
+                console.error(error);
+
+                mostrarMensaje(
+                    "Error de conexión con el servidor.",
+                    "red"
+                );
+
+            }
+
+        }
+
+
+        // ======================================
+        // MENSAJES
+        // ======================================
+
+        function mostrarMensaje(texto, color) {
+
+            const mensaje =
+                document.getElementById("mensaje");
+
+            mensaje.textContent = texto;
+
+            mensaje.style.color = color;
+
+        }
+
+    </script>
+
+</body>
+</html>
