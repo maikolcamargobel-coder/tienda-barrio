@@ -4,207 +4,128 @@ const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
 
+// Permite recibir datos en formato JSON
 app.use(express.json());
+
+// Permite mostrar los archivos de la carpeta public
 app.use(express.static("public"));
 
-
-// ======================================
-// PUERTO
-// ======================================
-
+// Puerto para local y para Render
 const PORT = process.env.PORT || 3000;
 
-
-// ======================================
-// CONEXIÓN CON SUPABASE
-// ======================================
-
+// Conexión con Supabase
 const supabase = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_PUBLISHABLE_KEY
 );
 
-
-// ======================================
-// LISTAR PRODUCTOS - PUNTO 7
-// ======================================
-
+// ================================
+// MOSTRAR PRODUCTOS
+// ================================
 app.get("/api/productos", async (req, res) => {
-
     const { data, error } = await supabase
         .from("productos")
         .select("*")
         .order("id", { ascending: true });
 
     if (error) {
-
         console.error("Error al listar:", error);
-
         return res.status(500).json({
             error: error.message
         });
-
     }
 
     res.json(data);
-
 });
 
-
-// ======================================
-// CREAR PRODUCTO - PUNTO 6
-// ======================================
-
+// ================================
+// CREAR PRODUCTO
+// ================================
 app.post("/api/productos", async (req, res) => {
-
-    const {
-        nombre,
-        precio,
-        categoria_id,
-        cantidad
-    } = req.body;
-
+    const { nombre, precio, categoria_id, cantidad } = req.body;
 
     const { data, error } = await supabase
         .from("productos")
         .insert([
             {
-                nombre: nombre,
-                precio: precio,
-                categoria_id: categoria_id,
-                cantidad: cantidad
+                nombre,
+                precio,
+                categoria_id,
+                cantidad
             }
         ])
         .select();
 
-
     if (error) {
-
-        console.error("Error al guardar:", error);
-
+        console.error("Error al crear:", error);
         return res.status(500).json({
             error: error.message
         });
-
     }
 
-
-    res.json(data[0]);
-
+    res.json(data);
 });
 
-
-// ======================================
-// EDITAR PRODUCTO - PUNTO 8
-// ======================================
-
+// ================================
+// EDITAR PRODUCTO
+// ================================
 app.put("/api/productos/:id", async (req, res) => {
-
-    const id = req.params.id;
-
-    const {
-        nombre,
-        precio,
-        categoria_id,
-        cantidad
-    } = req.body;
-
+    const { id } = req.params;
+    const { nombre, precio, categoria_id, cantidad } = req.body;
 
     const { data, error } = await supabase
         .from("productos")
         .update({
-            nombre: nombre,
-            precio: precio,
-            categoria_id: categoria_id,
-            cantidad: cantidad
+            nombre,
+            precio,
+            categoria_id,
+            cantidad
         })
         .eq("id", id)
         .select();
 
-
     if (error) {
-
-        console.error("Error al editar:", error);
-
+        console.error("Error al actualizar:", error);
         return res.status(500).json({
             error: error.message
         });
-
     }
 
-
-    res.json(data[0]);
-
+    res.json(data);
 });
 
-
-// ======================================
-// ELIMINAR PRODUCTO - PUNTO 9
-// ======================================
-
+// ================================
+// ELIMINAR PRODUCTO
+// ================================
 app.delete("/api/productos/:id", async (req, res) => {
+    const { id } = req.params;
 
-    const id = req.params.id;
-
-
-    const { error } = await supabase
+    const { data, error } = await supabase
         .from("productos")
         .delete()
-        .eq("id", id);
-
+        .eq("id", id)
+        .select();
 
     if (error) {
-
         console.error("Error al eliminar:", error);
-
         return res.status(500).json({
             error: error.message
         });
-
     }
 
-
-    res.json({
-        mensaje: "Producto eliminado correctamente"
-    });
-
+    res.json(data);
 });
 
-
-// ======================================
-// PÁGINA PRINCIPAL - TIENDA PÚBLICA
-// ======================================
-
+// ================================
+// PÁGINA PRINCIPAL
+// ================================
 app.get("/", (req, res) => {
-
-    res.sendFile(
-        __dirname + "/public/index.html"
-    );
-
+    res.sendFile(__dirname + "/public/index.html");
 });
 
-
-// ======================================
-// PANEL DE ADMINISTRACIÓN
-// ======================================
-
-app.get("/admin", (req, res) => {
-
-    res.sendFile(
-        __dirname + "/public/admin.html"
-    );
-
-});
-
-
-// ======================================
-// SERVIDOR
-// ======================================
-
+// ================================
+// INICIAR SERVIDOR
+// ================================
 app.listen(PORT, () => {
-
-    console.log(
-        `Servidor funcionando en http://localhost:${PORT}`
-    );
-
+    console.log(`Servidor funcionando en http://localhost:${PORT}`);
 });

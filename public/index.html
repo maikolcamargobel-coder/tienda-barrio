@@ -17,6 +17,10 @@
             background: #f5f5f5;
         }
 
+        /* ==============================
+           ENCABEZADO
+        ============================== */
+
         header {
             background: #2e7d32;
             color: white;
@@ -26,17 +30,26 @@
 
         header h1 {
             margin: 0;
+            font-size: 32px;
         }
 
         header p {
             margin: 8px 0 0;
         }
 
+        /* ==============================
+           CONTENEDOR
+        ============================== */
+
         .contenedor {
             width: 90%;
             max-width: 1200px;
             margin: 30px auto;
         }
+
+        /* ==============================
+           BUSCADOR
+        ============================== */
 
         .buscador {
             width: 100%;
@@ -47,6 +60,10 @@
             margin-bottom: 25px;
         }
 
+        /* ==============================
+           CATEGORÍAS
+        ============================== */
+
         .categoria {
             margin-bottom: 30px;
         }
@@ -56,6 +73,10 @@
             border-bottom: 2px solid #2e7d32;
             padding-bottom: 8px;
         }
+
+        /* ==============================
+           PRODUCTOS
+        ============================== */
 
         .productos {
             display: grid;
@@ -73,6 +94,7 @@
 
         .producto h3 {
             margin-top: 0;
+            word-break: break-word;
         }
 
         .precio {
@@ -93,11 +115,17 @@
             padding: 10px 15px;
             border-radius: 6px;
             cursor: pointer;
+            font-size: 15px;
+            width: 100%;
         }
 
         .producto button:hover {
             background: #1b5e20;
         }
+
+        /* ==============================
+           BOTÓN DEL CARRITO
+        ============================== */
 
         .carrito-boton {
             position: fixed;
@@ -110,7 +138,12 @@
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             z-index: 1000;
+            font-size: 15px;
         }
+
+        /* ==============================
+           CARRITO
+        ============================== */
 
         .carrito {
             display: none;
@@ -119,11 +152,17 @@
             right: 20px;
             width: 350px;
             max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 3px 15px rgba(0,0,0,0.3);
             z-index: 999;
+        }
+
+        .carrito h2 {
+            margin-top: 0;
         }
 
         .carrito-item {
@@ -139,16 +178,18 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            flex-shrink: 0;
         }
 
         .controles button {
             border: none;
             background: #2e7d32;
             color: white;
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             border-radius: 5px;
             cursor: pointer;
+            padding: 0;
         }
 
         .eliminar {
@@ -161,12 +202,167 @@
             margin-top: 15px;
         }
 
+        /* ==============================
+           PIE DE PÁGINA
+        ============================== */
+
         footer {
             background: #2e7d32;
             color: white;
             text-align: center;
             padding: 15px;
             margin-top: 40px;
+        }
+
+        /* ==================================================
+           PUNTO 14 - ADAPTACIÓN PARA CELULARES
+        ================================================== */
+
+        @media (max-width: 768px) {
+
+            header {
+                padding: 70px 15px 20px;
+            }
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            header p {
+                font-size: 14px;
+            }
+
+            .contenedor {
+                width: 94%;
+                margin: 20px auto;
+            }
+
+            .buscador {
+                font-size: 16px;
+                padding: 13px;
+            }
+
+            .productos {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .producto {
+                padding: 14px 10px;
+            }
+
+            .producto h3 {
+                font-size: 17px;
+            }
+
+            .precio {
+                font-size: 18px;
+            }
+
+            .cantidad {
+                font-size: 14px;
+            }
+
+            .producto button {
+                font-size: 14px;
+                padding: 10px 6px;
+            }
+
+            .carrito-boton {
+                top: 12px;
+                right: 12px;
+                padding: 10px 13px;
+                font-size: 14px;
+            }
+
+            .carrito {
+                top: 62px;
+                right: 5%;
+                width: 90%;
+                max-width: none;
+                max-height: 75vh;
+                padding: 15px;
+            }
+
+            .carrito-item {
+                align-items: center;
+            }
+
+            .controles {
+                gap: 4px;
+            }
+
+            .controles button {
+                width: 30px;
+                height: 30px;
+            }
+
+            footer {
+                font-size: 13px;
+            }
+        }
+
+        /* ==============================
+           CELULARES PEQUEÑOS
+        ============================== */
+
+        @media (max-width: 480px) {
+
+            header {
+                padding-top: 65px;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            header p {
+                font-size: 13px;
+            }
+
+            .productos {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .producto {
+                padding: 12px 8px;
+            }
+
+            .producto h3 {
+                font-size: 16px;
+            }
+
+            .precio {
+                font-size: 17px;
+            }
+
+            .cantidad {
+                font-size: 13px;
+            }
+
+            .producto button {
+                font-size: 13px;
+                padding: 9px 5px;
+            }
+
+            .carrito {
+                width: 94%;
+                right: 3%;
+            }
+
+            .carrito-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .controles {
+                justify-content: center;
+            }
+
+            footer {
+                padding: 12px 8px;
+            }
         }
     </style>
 </head>
@@ -183,6 +379,7 @@
     </button>
 
     <div id="carrito" class="carrito">
+
         <h2>🛒 Mi carrito</h2>
 
         <div id="carritoProductos"></div>
@@ -190,6 +387,7 @@
         <div class="total">
             Total: $<span id="total">0</span>
         </div>
+
     </div>
 
     <main class="contenedor">
@@ -207,7 +405,7 @@
     </main>
 
     <footer>
-        <p>© 2026 Online Market - Todos los derechos reservados</p>
+        <p>©️ 2026 Online Market - Todos los derechos reservados</p>
     </footer>
 
 
@@ -264,10 +462,13 @@
 
             lista.forEach(producto => {
 
-                const categoria = producto.categoria_id || "Sin categoría";
+                const categoria =
+                    producto.categoria_id || "Sin categoría";
 
                 if (!categorias[categoria]) {
+
                     categorias[categoria] = [];
+
                 }
 
                 categorias[categoria].push(producto);
@@ -277,7 +478,8 @@
 
             Object.keys(categorias).forEach(categoria => {
 
-                const seccion = document.createElement("div");
+                const seccion =
+                    document.createElement("div");
 
                 seccion.className = "categoria";
 
@@ -292,7 +494,8 @@
 
                 categorias[categoria].forEach(producto => {
 
-                    const tarjeta = document.createElement("div");
+                    const tarjeta =
+                        document.createElement("div");
 
                     tarjeta.className = "producto";
 
@@ -331,11 +534,16 @@
         function buscarProducto() {
 
             const texto =
-                document.getElementById("buscador").value.toLowerCase();
+                document.getElementById("buscador")
+                .value
+                .toLowerCase();
 
-            const filtrados = productos.filter(producto =>
-                producto.nombre.toLowerCase().includes(texto)
-            );
+            const filtrados =
+                productos.filter(producto =>
+                    producto.nombre
+                    .toLowerCase()
+                    .includes(texto)
+                );
 
             mostrarProductos(filtrados);
 
@@ -348,7 +556,8 @@
 
         function agregarCarrito(id) {
 
-            const producto = productos.find(p => p.id === id);
+            const producto =
+                productos.find(p => p.id === id);
 
             if (!producto) return;
 
@@ -360,20 +569,26 @@
             if (existente) {
 
                 if (existente.cantidad < producto.cantidad) {
+
                     existente.cantidad++;
+
                 } else {
+
                     alert("No hay más unidades disponibles.");
+
                     return;
                 }
 
             } else {
 
                 carrito.push({
+
                     id: producto.id,
                     nombre: producto.nombre,
                     precio: Number(producto.precio),
                     cantidad: 1,
                     disponible: Number(producto.cantidad)
+
                 });
 
             }
@@ -394,9 +609,13 @@
                 document.getElementById("carrito");
 
             if (carritoDiv.style.display === "block") {
+
                 carritoDiv.style.display = "none";
+
             } else {
+
                 carritoDiv.style.display = "block";
+
             }
 
         }
@@ -426,9 +645,11 @@
 
             carrito.forEach((item, indice) => {
 
-                total += item.precio * item.cantidad;
+                total +=
+                    item.precio * item.cantidad;
 
-                cantidadTotal += item.cantidad;
+                cantidadTotal +=
+                    item.cantidad;
 
 
                 const div =
@@ -438,6 +659,7 @@
 
 
                 div.innerHTML = `
+
                     <div>
                         <strong>${item.nombre}</strong>
                         <br>
@@ -463,6 +685,7 @@
                         </button>
 
                     </div>
+
                 `;
 
 
@@ -471,7 +694,8 @@
             });
 
 
-            contador.textContent = cantidadTotal;
+            contador.textContent =
+                cantidadTotal;
 
             totalElemento.textContent =
                 total.toLocaleString("es-CO");
@@ -485,7 +709,8 @@
 
         function aumentarCantidad(indice) {
 
-            const item = carrito[indice];
+            const item =
+                carrito[indice];
 
 
             if (item.cantidad < item.disponible) {
